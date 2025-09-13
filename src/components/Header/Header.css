@@ -27,6 +27,10 @@
   border: none;
 }
 
+.header__add-clothes-btn:hover {
+  opacity: 60%;
+}
+
 .header__user-container {
   display: flex;
   align-items: center;
