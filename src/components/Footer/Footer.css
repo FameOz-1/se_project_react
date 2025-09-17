@@ -1,0 +1,9 @@
+.footer__text {
+  max-width: 204px;
+  top: 1040px;
+  left: 40px;
+  font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+}
