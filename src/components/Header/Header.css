@@ -1,15 +1,10 @@
-@font-face {
-  font-family: "Cabinet Grotesk";
-  src: url("../../vendor/fonts/CabinetGrotesk-Regular.woff2") format("woff2");
-  font-weight: 700;
-  font-style: bold;
-}
-
 .header {
   display: flex;
   align-items: center;
   padding: 32px 0 28px;
   font-family: "Cabinet Grotesk", Arial, sans-serif;
+  font-size: 20px;
+  line-height: 24px;
 }
 
 .header__logo {
