@@ -1,7 +1,11 @@
 import "./Footer.css";
 
 function Footer() {
-  return <h3 className="footer__text">Developed by Austin Abbott</h3>;
+  return (
+    <footer className="footer">
+      <h3 className="footer__text">Developed by Austin Abbott</h3>
+    </footer>
+  );
 }
 
 export default Footer;

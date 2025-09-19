@@ -6,7 +6,8 @@ import Main from "../Main/Main";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import ItemModal from "../ItemModal/ItemModal";
 import { coordinates, APIkey } from "../../utils/constants";
-import { getweather, filterWeatherData } from "../../utils/weatherApi";
+import { defaultClothingItems } from "../../utils/constants";
+import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import Footer from "../Footer/Footer";
 
 function App() {
@@ -31,8 +32,10 @@ function App() {
     setActiveModal("");
   };
 
+  const [items] = useState([defaultClothingItems]);
+
   useEffect(() => {
-    getweather(coordinates, APIkey)
+    getWeather(coordinates, APIkey)
       .then((data) => {
         const filteredData = filterWeatherData(data);
         setWeatherData(filteredData);
@@ -41,13 +44,17 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="page">
       <div className="page__content">
         <Header handleAddClick={handleAddClick} weatherData={weatherData} />
-        <Main weatherData={weatherData} handleCardClick={handleCardClick} />
+        <Main
+          weatherData={weatherData}
+          handleCardClick={handleCardClick}
+          clothingItems={items}
+        />
       </div>
-      {activeModal && (
-        <>
+      <>
+        {activeModal === "add-garment" && (
           <ModalWithForm
             buttonText="Add garment"
             title="New garment"
@@ -55,18 +62,18 @@ function App() {
             onClose={closeActiveModal}
           >
             <label htmlFor="name" className="modal__label">
-              Name{"close"}
+              Name
               <input
                 type="text"
                 className="modal__input"
                 id="name"
-                placeholder="Name"
+                placeholder="What should we call you?"
               />
             </label>
             <label htmlFor="imageUrl" className="modal__label">
               Image{" "}
               <input
-                type="text"
+                type="url"
                 className="modal__input"
                 id="imageUrl"
                 placeholder="Image URL"
@@ -80,32 +87,52 @@ function App() {
                 htmlFor="hot"
                 className="modal__label modal__label_type_radio"
               >
-                <input id="hot" type="radio" className="modal__radio-input" />{" "}
+                <input
+                  id="hot"
+                  type="radio"
+                  name="weather"
+                  value="hot"
+                  className="modal__radio-input"
+                />{" "}
                 Hot
               </label>
               <label
                 htmlFor="warm"
                 className="modal__label modal__label_type_radio"
               >
-                <input id="warm" type="radio" className="modal__radio-input" />{" "}
+                <input
+                  id="warm"
+                  type="radio"
+                  name="weather"
+                  value="warm"
+                  className="modal__radio-input"
+                />{" "}
                 Warm
               </label>
               <label
                 htmlFor="cold"
                 className="modal__label modal__label_type_radio"
               >
-                <input id="cold" type="radio" className="modal__radio-input" />{" "}
+                <input
+                  id="cold"
+                  type="radio"
+                  name="weather"
+                  value="cold"
+                  className="modal__radio-input"
+                />{" "}
                 Cold
               </label>
             </fieldset>
           </ModalWithForm>
+        )}
+        {activeModal === "preview" && (
           <ItemModal
             activeModal={activeModal}
             card={selectedCard}
             onClose={closeActiveModal}
           />
-        </>
-      )}
+        )}
+      </>
       <Footer />
     </div>
   );

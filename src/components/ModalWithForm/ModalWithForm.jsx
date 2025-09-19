@@ -1,5 +1,5 @@
 import "./ModalWithForm.css";
-import "../../assets/close.svg";
+// import "../../assets/close.svg";
 
 function ModalWithForm({ children, buttonText, title, activeModal, onClose }) {
   return (
