@@ -1,0 +1,29 @@
+.modal__content.modal__content_type_image {
+  width: 498px;
+  height: 610px;
+  border-radius: 16px;
+  padding: 0;
+}
+
+.modal__image {
+  border-radius: 16px 16px 0 0;
+  object-position: center;
+  width: 494px;
+  height: 498px;
+}
+
+.modal__caption {
+  font-size: 16px;
+  line-height: 20px;
+  margin: 20px 0 12px 32px;
+  width: 36px;
+  height: 24px;
+}
+
+.modal__weather {
+  font-size: 16px;
+  line-height: 20px;
+  margin: 0 0 32px 32px;
+  width: 115px;
+  height: 24px;
+}

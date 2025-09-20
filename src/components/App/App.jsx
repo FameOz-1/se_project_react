@@ -32,6 +32,22 @@ function App() {
     setActiveModal("");
   };
 
+  useEffect(() => {
+    if (!activeModal) return;
+
+    const handleEscClose = (e) => {
+      if (e.key === "Escape") {
+        closeActiveModal();
+      }
+    };
+
+    document.addEventListener("keydown", handleEscClose);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscClose);
+    };
+  }, [activeModal]);
+
   const [items] = useState([defaultClothingItems]);
 
   useEffect(() => {
@@ -56,9 +72,9 @@ function App() {
       <>
         {activeModal === "add-garment" && (
           <ModalWithForm
+            isOpen={true}
             buttonText="Add garment"
             title="New garment"
-            activeModal={activeModal}
             onClose={closeActiveModal}
           >
             <label htmlFor="name" className="modal__label">
