@@ -12,18 +12,21 @@ import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import Footer from "../Footer/Footer";
 
 function App() {
-  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
-  const handleToggleSwitchChange = () => {
-    setCurrentTemperatureUnit(setCurrentTemperatureUnit === "F" ? "C" : "F");
-  };
-
   const [weatherData, setWeatherData] = useState({
     type: "",
-    temp: "",
+    temp: { F: 36.9, C: 36.9 },
     city: "",
+    condition: "",
+    isDay: true,
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
+  const [items] = useState([defaultClothingItems]);
+  const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+
+  const handleToggleSwitchChange = () => {
+    setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
+  };
 
   const handleCardClick = (card) => {
     setActiveModal("preview");
@@ -53,8 +56,6 @@ function App() {
       document.removeEventListener("keydown", handleEscClose);
     };
   }, [activeModal]);
-
-  const [items] = useState([defaultClothingItems]);
 
   useEffect(() => {
     getWeather(coordinates, APIkey)
