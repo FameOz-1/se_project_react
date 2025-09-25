@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import "./App.css";
 import Header from "../Header/Header";
 import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
@@ -84,37 +86,47 @@ function App() {
   }, []);
 
   return (
-    <CurrentTemperatureUnitContext.Provider
-      value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-    >
-      <div className="page">
-        <div className="page__content">
-          <Header handleAddClick={handleAddClick} weatherData={weatherData} />
-          <Main
-            weatherData={weatherData}
-            handleCardClick={handleCardClick}
-            clothingItems={clothingItems}
-          />
+    <BrowserRouter basename="/se_project_react">
+      <CurrentTemperatureUnitContext.Provider
+        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+      >
+        <div className="page">
+          <div className="page__content">
+            <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Main
+                    weatherData={weatherData}
+                    handleCardClick={handleCardClick}
+                    clothingItems={clothingItems}
+                  />
+                }
+              />
+              <Route path="/profile" element={<p>PROFILE</p>} />
+            </Routes>
+          </div>
+          <>
+            {activeModal === "add-garment" && (
+              <AddItemModal
+                onClose={closeActiveModal}
+                isOpen={activeModal === "add-garment"}
+                onAddItem={onAddItem}
+              ></AddItemModal>
+            )}
+            {activeModal === "preview" && (
+              <ItemModal
+                activeModal={activeModal}
+                card={selectedCard}
+                onClose={closeActiveModal}
+              />
+            )}
+          </>
+          <Footer />
         </div>
-        <>
-          {activeModal === "add-garment" && (
-            <AddItemModal
-              onClose={closeActiveModal}
-              isOpen={activeModal === "add-garment"}
-              onAddItem={onAddItem}
-            ></AddItemModal>
-          )}
-          {activeModal === "preview" && (
-            <ItemModal
-              activeModal={activeModal}
-              card={selectedCard}
-              onClose={closeActiveModal}
-            />
-          )}
-        </>
-        <Footer />
-      </div>
-    </CurrentTemperatureUnitContext.Provider>
+      </CurrentTemperatureUnitContext.Provider>
+    </BrowserRouter>
   );
 }
 
