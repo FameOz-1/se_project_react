@@ -6,8 +6,11 @@ import Main from "../Main/Main";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
-import { coordinates, APIkey } from "../../utils/constants";
-import { defaultClothingItems } from "../../utils/constants";
+import {
+  coordinates,
+  APIkey,
+  defaultClothingItems,
+} from "../../utils/constants";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 
 function App() {
@@ -20,8 +23,8 @@ function App() {
   });
   const [activeModal, setActiveModal] = useState("");
   const [selectedCard, setSelectedCard] = useState({});
-  const [items] = useState([defaultClothingItems]);
   const [currentTemperatureUnit, setCurrentTemperatureUnit] = useState("F");
+  const [clothingItems, setClothingItems] = useState(defaultClothingItems);
 
   const handleToggleSwitchChange = () => {
     setCurrentTemperatureUnit(currentTemperatureUnit === "F" ? "C" : "F");
@@ -35,6 +38,21 @@ function App() {
   const handleAddClick = () => {
     setActiveModal("add-garment");
   };
+
+  const onAddItem = (inputValues) => {
+    //  call the .fetch() function
+    //  .then({data) => {}) include all stuff below
+    const newCardData = {
+      name: inputValues.name,
+      link: inputValues.link,
+      weather: inputValues.weatherType,
+    };
+    //  Don't use newCardData
+    //  The ID will be included in the response data
+    setClothingItems([...clothingItems, newCardData]);
+    closeActiveModal();
+  };
+  //call  .catch(console.error);
 
   const closeActiveModal = () => {
     setActiveModal("");
@@ -75,7 +93,7 @@ function App() {
           <Main
             weatherData={weatherData}
             handleCardClick={handleCardClick}
-            clothingItems={items}
+            clothingItems={clothingItems}
           />
         </div>
         <>
@@ -83,6 +101,7 @@ function App() {
             <AddItemModal
               onClose={closeActiveModal}
               isOpen={activeModal === "add-garment"}
+              onAddItem={onAddItem}
             ></AddItemModal>
           )}
           {activeModal === "preview" && (
