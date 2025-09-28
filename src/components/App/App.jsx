@@ -95,7 +95,7 @@ function App() {
 
             <Routes>
               <Route
-                path="*"
+                path="/"
                 element={
                   <Main
                     weatherData={weatherData}
@@ -104,7 +104,10 @@ function App() {
                   />
                 }
               />
-              <Route path="/profile" element={<Profile />} />
+              <Route
+                path="/profile"
+                element={<Profile handleCardClick={handleCardClick} />}
+              />
             </Routes>
           </div>
           <>
