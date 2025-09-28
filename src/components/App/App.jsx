@@ -8,12 +8,11 @@ import Main from "../Main/Main";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
-import {
-  coordinates,
-  APIkey,
-  defaultClothingItems,
-} from "../../utils/constants";
+import Profile from "../Profile/Profile";
+
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
+import { defaultClothingItems } from "../../utils/constants";
+import { coordinates, APIkey } from "../../utils/constants";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -86,16 +85,17 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter basename="/se_project_react">
+    <BrowserRouter>
       <CurrentTemperatureUnitContext.Provider
         value={{ currentTemperatureUnit, handleToggleSwitchChange }}
       >
         <div className="page">
           <div className="page__content">
             <Header handleAddClick={handleAddClick} weatherData={weatherData} />
+
             <Routes>
               <Route
-                path="/"
+                path="*"
                 element={
                   <Main
                     weatherData={weatherData}
@@ -104,7 +104,7 @@ function App() {
                   />
                 }
               />
-              <Route path="/profile" element={<p>PROFILE</p>} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </div>
           <>

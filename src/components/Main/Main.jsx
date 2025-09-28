@@ -1,9 +1,17 @@
 import "./Main.css";
 import WeatherCard from "../WeatherCard/WeatherCard";
 import ItemCard from "../ItemCard/ItemCard";
+// import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
+// import { useContext } from "react";
 
 function Main({ weatherData, handleCardClick, clothingItems }) {
+  //   const handleToggleSwitchChange = () => {
+  //     currentTemperatureUnit === "F"
+  //       ? setCurrentTemperatureUnit("C")
+  //       : setCurrentTemperatureUnit("F");
+  //   };
   return (
+    // <CurrentTemperatureUnitContext.Provider>
     <main>
       <WeatherCard weatherData={weatherData} />
       <section className="cards">
@@ -27,6 +35,7 @@ function Main({ weatherData, handleCardClick, clothingItems }) {
         </ul>
       </section>
     </main>
+    // </CurrentTemperatureUnitContext.Provider>
   );
 }
 
