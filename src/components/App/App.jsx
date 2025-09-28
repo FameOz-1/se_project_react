@@ -13,6 +13,7 @@ import Profile from "../Profile/Profile";
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { defaultClothingItems } from "../../utils/constants";
 import { coordinates, APIkey } from "../../utils/constants";
+import { getItems } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -84,6 +85,15 @@ function App() {
       .catch(console.error);
   }, []);
 
+  useEffect(() => {
+    getItems()
+      .then((data) => {
+        console.log(data);
+        // set the clothingItems
+      })
+      .catch(console.error);
+  }, []);
+
   return (
     <BrowserRouter>
       <CurrentTemperatureUnitContext.Provider
@@ -97,6 +107,7 @@ function App() {
               <Route
                 path="/"
                 element={
+                  //  pass clothingItems as prop
                   <Main
                     weatherData={weatherData}
                     handleCardClick={handleCardClick}
