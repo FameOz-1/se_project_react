@@ -1,0 +1,48 @@
+@font-face {
+  src: url("../../vendor/fonts/cabinet-grotesk-webfont/CabinetGrotesk-Regular.woff");
+  font-family: "Cabinet Grotesk";
+}
+
+.modal__content_type_confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  width: 670px;
+  height: 280px;
+}
+
+.modal__close_type_confirm {
+  right: 20px;
+}
+
+.modal__text {
+  font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+}
+
+.modal__text:last-of-type {
+  margin-bottom: 40px;
+}
+
+.modal__delete-button_type_confirm {
+  margin-bottom: 24px;
+}
+
+.modal__cancel-button {
+  font-family: "Cabinet Grotesk", Arial, Helvetica, sans-serif;
+  border: none;
+  background-color: transparent;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  opacity: 0.6;
+}
+
+.modal__cancel-button:hover {
+  opacity: 1;
+}

@@ -9,11 +9,12 @@ import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
 import AddItemModal from "../AddItemModal/AddItemModal";
 import Profile from "../Profile/Profile";
+import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmationModal.jsx";
 
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { defaultClothingItems } from "../../utils/constants";
 import { coordinates, APIkey } from "../../utils/constants";
-import { getItems } from "../../utils/api";
+import { getItems, postItem, deleteItem } from "../../utils/api";
 
 function App() {
   const [weatherData, setWeatherData] = useState({
@@ -45,6 +46,7 @@ function App() {
     //  call the .fetch() function
     //  .then({data) => {}) include all stuff below
     const newCardData = {
+      _id: inputValues._id,
       name: inputValues.name,
       link: inputValues.link,
       weather: inputValues.weatherType,
@@ -54,7 +56,6 @@ function App() {
     setClothingItems([...clothingItems, newCardData]);
     closeActiveModal();
   };
-  //call  .catch(console.error);
 
   const closeActiveModal = () => {
     setActiveModal("");
@@ -88,18 +89,40 @@ function App() {
   useEffect(() => {
     getItems()
       .then((data) => {
-        console.log(data);
-        // set the clothingItems
+        setClothingItems(data);
       })
       .catch(console.error);
   }, []);
 
+  const openConfirmationModal = () => {
+    let card = selectedCard;
+    setActiveModal("deleteConfirmation");
+    return card;
+  };
+
+  const handleCardDelete = () => {
+    let id = selectedCard._id;
+    deleteItem(id)
+      .then(() => {
+        setClothingItems((prev) => prev.filter((item) => item._id !== id));
+        closeActiveModal();
+        setSelectedCard({});
+      })
+      .catch(console.error);
+  };
+
+  const handleOverlayClose = (evt) => {
+    if (evt.target.classList.contains("modal")) {
+      closeActiveModal();
+    }
+  };
+
   return (
-    <BrowserRouter>
-      <CurrentTemperatureUnitContext.Provider
-        value={{ currentTemperatureUnit, handleToggleSwitchChange }}
-      >
-        <div className="page">
+    <div className="page">
+      <BrowserRouter>
+        <CurrentTemperatureUnitContext.Provider
+          value={{ currentTemperatureUnit, handleToggleSwitchChange }}
+        >
           <div className="page__content">
             <Header handleAddClick={handleAddClick} weatherData={weatherData} />
 
@@ -107,7 +130,6 @@ function App() {
               <Route
                 path="/"
                 element={
-                  //  pass clothingItems as prop
                   <Main
                     weatherData={weatherData}
                     handleCardClick={handleCardClick}
@@ -117,30 +139,49 @@ function App() {
               />
               <Route
                 path="/profile"
-                element={<Profile handleCardClick={handleCardClick} />}
+                element={
+                  <Profile
+                    handleAddClick={handleAddClick}
+                    handleCardClick={handleCardClick}
+                    clothingItems={clothingItems}
+                  />
+                }
               />
             </Routes>
+            <>
+              {activeModal === "add-garment" && (
+                <AddItemModal
+                  onClose={closeActiveModal}
+                  isOpen={activeModal === "add-garment"}
+                  onAddItem={onAddItem}
+                  onOverlayClose={handleOverlayClose}
+                  postItem={postItem}
+                ></AddItemModal>
+              )}
+              {activeModal === "preview" && (
+                <ItemModal
+                  activeModal={activeModal}
+                  card={selectedCard}
+                  onClose={closeActiveModal}
+                  onOverlayClose={handleOverlayClose}
+                  onConfirm={openConfirmationModal}
+                />
+              )}
+              {activeModal === "deleteConfirmation" && (
+                <DeleteConfirmationModal
+                  name="deleteConfirmation"
+                  activeModal={activeModal}
+                  onCardDelete={handleCardDelete}
+                  onClose={closeActiveModal}
+                  deleteItem={deleteItem}
+                />
+              )}
+            </>
+            <Footer />
           </div>
-          <>
-            {activeModal === "add-garment" && (
-              <AddItemModal
-                onClose={closeActiveModal}
-                isOpen={activeModal === "add-garment"}
-                onAddItem={onAddItem}
-              ></AddItemModal>
-            )}
-            {activeModal === "preview" && (
-              <ItemModal
-                activeModal={activeModal}
-                card={selectedCard}
-                onClose={closeActiveModal}
-              />
-            )}
-          </>
-          <Footer />
-        </div>
-      </CurrentTemperatureUnitContext.Provider>
-    </BrowserRouter>
+        </CurrentTemperatureUnitContext.Provider>
+      </BrowserRouter>
+    </div>
   );
 }
 
