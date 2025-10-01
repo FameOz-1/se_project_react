@@ -1,7 +1,7 @@
 import ItemCard from "../ItemCard/ItemCard";
-import "./ClothingSection.css";
+import "./ClothesSection.css";
 
-function ClothingSection({ handleCardClick, handleAddClick, clothingItems }) {
+function ClothesSection({ handleCardClick, handleAddClick, clothingItems }) {
   return (
     <div className="clothing-section">
       <div>
@@ -29,4 +29,4 @@ function ClothingSection({ handleCardClick, handleAddClick, clothingItems }) {
   );
 }
 
-export default ClothingSection;
+export default ClothesSection;
