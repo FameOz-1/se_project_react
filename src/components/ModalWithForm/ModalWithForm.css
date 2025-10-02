@@ -52,6 +52,10 @@
   width: 100%;
 }
 
+.modal__input_type_error {
+  border-bottom: 2px solid #ff3b3b;
+}
+
 .modal__legend {
   font-size: 16px;
   line-height: 20px;
@@ -86,8 +90,12 @@
   flex-direction: column;
 }
 
+.modal__radio-input.modal__input_type_error {
+  outline: 2px solid #ff3b3b;
+}
+
 .modal__submit {
-  margin: 24px 0 36px;
+  margin: 12px 0 36px;
   width: 124px;
   height: 36px;
   border-radius: 4px;
@@ -98,4 +106,12 @@
 
 .modal__submit:hover {
   opacity: 60%;
+}
+
+.modal__error {
+  color: #ff3b3b;
+  font-size: 12px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  display: block;
 }

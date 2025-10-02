@@ -1,4 +1,4 @@
-import { useForm } from "../../hooks/useForm";
+import useFormWithValidation from "../../hooks/useFormWithValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
 const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
@@ -7,12 +7,23 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
     link: "",
     weather: "",
   };
-  const { values, handleChange } = useForm(defaultValues);
+  const {
+    values,
+    errors,
+    isValid,
+    handleChange,
+    handleBlur,
+    touched,
+    resetForm,
+  } = useFormWithValidation(defaultValues);
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    if (!isValid) return;
     onAddItem(values);
+    resetForm(defaultValues, {}, false);
   }
+  console.log(errors);
 
   return (
     <ModalWithForm
@@ -21,30 +32,47 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
       isOpen={isOpen}
       onClose={onClose}
       onSubmit={handleSubmit}
+      isSubmitDisabled={!isValid}
     >
       <label htmlFor="name" className="modal__label">
         Name
         <input
           type="text"
           name="name"
-          className="modal__input"
+          className={`modal__input${
+            errors.name ? " modal__input_type_error" : ""
+          }`}
           id="name"
           placeholder="What should we call you?"
           value={values.name}
           onChange={handleChange}
+          required
+          onBlur={handleBlur}
+          autoComplete="name"
         />
+        {touched.name && errors.name && (
+          <span className="modal__error">{errors.name}</span>
+        )}
       </label>
       <label htmlFor="imageUrl" className="modal__label">
         Image{" "}
         <input
           type="url"
           name="link"
-          className="modal__input"
+          className={`modal__input${
+            errors.link ? " modal__input_type_error" : ""
+          }`}
           id="imageUrl"
           placeholder="Image URL"
           value={values.link}
           onChange={handleChange}
+          required
+          onBlur={handleBlur}
+          autoComplete="url"
         />
+        {touched.link && errors.link && (
+          <span className="modal__error">{errors.link}</span>
+        )}
       </label>
       <fieldset className="modal__radio-button">
         <legend className="modal__legend">Select the weather type:</legend>
@@ -53,9 +81,13 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
             id="hot"
             type="radio"
             name="weather"
-            className="modal__radio-input"
+            className={`modal__radio-input${
+              errors.weather ? " modal__input_type_error" : ""
+            }`}
             value="hot"
             onChange={handleChange}
+            required
+            onBlur={handleBlur}
           />{" "}
           Hot
         </label>
@@ -64,9 +96,13 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
             id="warm"
             type="radio"
             name="weather"
-            className="modal__radio-input"
+            className={`modal__radio-input${
+              errors.weather ? " modal__input_type_error" : ""
+            }`}
             value="warm"
             onChange={handleChange}
+            required
+            onBlur={handleBlur}
           />{" "}
           Warm
         </label>
@@ -75,12 +111,19 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
             id="cold"
             type="radio"
             name="weather"
-            className="modal__radio-input"
+            className={`modal__radio-input${
+              errors.weather ? " modal__input_type_error" : ""
+            }`}
             value="cold"
             onChange={handleChange}
+            required
+            onBlur={handleBlur}
           />{" "}
           Cold
         </label>
+        {touched.weather && errors.weather && (
+          <span className="modal__error">{errors.weather}</span>
+        )}
       </fieldset>
     </ModalWithForm>
   );
