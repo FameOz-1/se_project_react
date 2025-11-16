@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./App.css";
 import Header from "../Header/Header";
-import CurrentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
+import currentTemperatureUnitContext from "../../contexts/CurrentTemperatureUnitContext";
 import Main from "../Main/Main";
 import ItemModal from "../ItemModal/ItemModal";
 import Footer from "../Footer/Footer";
@@ -13,7 +13,7 @@ import DeleteConfirmationModal from "../DeleteConfirmationModal/DeleteConfirmati
 
 import { getWeather, filterWeatherData } from "../../utils/weatherApi";
 import { defaultClothingItems } from "../../utils/constants";
-import { coordinates, APIkey } from "../../utils/constants";
+import { coordinates, apikey } from "../../utils/constants";
 import { getItems, postItem, deleteItem } from "../../utils/api";
 
 function App() {
@@ -43,18 +43,14 @@ function App() {
   };
 
   const onAddItem = (inputValues) => {
-    //  call the .fetch() function
-    //  .then({data) => {}) include all stuff below
-    const newCardData = {
-      _id: inputValues._id,
-      name: inputValues.name,
-      link: inputValues.link,
-      weather: inputValues.weatherType,
-    };
-    //  Don't use newCardData
-    //  The ID will be included in the response data
-    setClothingItems([...clothingItems, newCardData]);
-    closeActiveModal();
+    postItem(inputValues)
+      .then((newItem) => {
+        setClothingItems([...clothingItems, newItem]);
+        closeActiveModal();
+      })
+      .catch((error) => {
+        console.error("Error adding item:", error);
+      });
   };
 
   const closeActiveModal = () => {
@@ -78,7 +74,7 @@ function App() {
   }, [activeModal]);
 
   useEffect(() => {
-    getWeather(coordinates, APIkey)
+    getWeather(coordinates, apikey)
       .then((data) => {
         const filteredData = filterWeatherData(data);
         setWeatherData(filteredData);
@@ -120,7 +116,7 @@ function App() {
   return (
     <div className="page">
       <BrowserRouter>
-        <CurrentTemperatureUnitContext.Provider
+        <currentTemperatureUnitContext.Provider
           value={{ currentTemperatureUnit, handleToggleSwitchChange }}
         >
           <div className="page__content">
@@ -179,7 +175,7 @@ function App() {
             </>
             <Footer />
           </div>
-        </CurrentTemperatureUnitContext.Provider>
+        </currentTemperatureUnitContext.Provider>
       </BrowserRouter>
     </div>
   );

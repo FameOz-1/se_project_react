@@ -1,7 +1,7 @@
 import useFormWithValidation from "../../hooks/useFormWithValidation";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 
-const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
+const AddItemModal = ({ isOpen, onAddItem, onClose, postItem }) => {
   const defaultValues = {
     name: "",
     link: "",
@@ -16,14 +16,22 @@ const AddItemModal = ({ isOpen, onAddItem, onClose }) => {
     touched,
     resetForm,
   } = useFormWithValidation(defaultValues);
+  console.log(defaultValues);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    if (!isValid) return;
-    onAddItem(values);
-    resetForm(defaultValues, {}, false);
+    postItem(values)
+      .then((newItem) => {
+        onAddItem(newItem);
+        resetForm();
+      })
+      .catch((error) => {
+        console.error("Error adding item:", error);
+      });
+    // if (!isValid) return;
+    // onAddItem(values);
+    // resetForm(defaultValues, {}, false);
   }
-  console.log(errors);
 
   return (
     <ModalWithForm

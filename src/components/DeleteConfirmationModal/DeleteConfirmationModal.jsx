@@ -4,7 +4,7 @@ function DeleteConfirmationModal({ activeModal, name, onCardDelete, onClose }) {
   return (
     <div
       className={`modal ${
-        activeModal === "deleteConfirmation" && "modal_opened"
+        activeModal === "deleteConfirmation" && "modal__opened"
       } modal_type_${name}`}
     >
       <div className="modal__content modal__content_type_confirm">
